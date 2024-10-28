@@ -63,19 +63,43 @@ export default {
       });
     },
     getChartData() {
-      // Filtra e processa os dados do JSON conforme timeFilter e chartType
-      let data = starsData; // Implementar filtragem conforme necessário
+      // Processa dados JSON e aplica filtros
+      let filteredData = this.applyFilters(starsData);
+      let labels = filteredData.map((item) => new Date(item.starred_at));
+      let data = filteredData.map((item) => item.stars);
+
+      if (this.chartType === 'cumulative') {
+        data = data.reduce((acc, value, index) => {
+          acc.push(value + (acc[index - 1] || 0));
+          return acc;
+        }, []);
+      }
+
       return {
-        labels: data.map((item) => new Date(item.starred_at)), // Tempo de estrelas
+        labels,
         datasets: [
           {
             label: 'Número de Estrelas',
-            data: data.map((item) => item.stars),
+            data,
             fill: false,
             borderColor: 'blue',
           },
         ],
       };
+    },
+    applyFilters(data) {
+      const now = new Date();
+      let filteredData = data;
+
+      if (this.timeFilter === '30d') {
+        filteredData = data.filter((item) => new Date(item.starred_at) >= new Date(now.setDate(now.getDate() - 30)));
+      } else if (this.timeFilter === '6m') {
+        filteredData = data.filter((item) => new Date(item.starred_at) >= new Date(now.setMonth(now.getMonth() - 6)));
+      } else if (this.timeFilter === '1y') {
+        filteredData = data.filter((item) => new Date(item.starred_at) >= new Date(now.setFullYear(now.getFullYear() - 1)));
+      }
+
+      return filteredData;
     },
     updateChart() {
       this.chart.data = this.getChartData();

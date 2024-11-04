@@ -42,7 +42,7 @@ Painel analítico desenvolvido com **Vue.js** para exibir dados sobre o crescime
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/seu_usuario/thefuck-analytics-dashboard.git
+   git clone https://github.com/Gustavo-Lopez-Flores/thefuck-analytics-dashboard.git
    cd thefuck-analytics-dashboard
    ```
 

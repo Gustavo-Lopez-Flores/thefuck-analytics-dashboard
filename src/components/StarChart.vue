@@ -24,7 +24,7 @@
 
 <script>
 import { Chart, registerables } from 'chart.js';
-import starsData from '../data/thefuck-sample-100.json'; // Importação de dados JSON
+import starsData from '../data/thefuck-sample-100.json';
 
 Chart.register(...registerables);
 
@@ -62,18 +62,14 @@ export default {
         },
       });
 
-      // Após inicializar o gráfico, chama updateChart para configurar os dados corretamente
       this.updateChart();
     },
     getChartData() {
-      // Processa dados JSON e aplica filtros
       let filteredData = this.applyFilters(starsData);
-      
-      // Extrair datas e contar número de estrelas
+
       let labels = filteredData.map((item) => new Date(item.starred_at));
       let data = Array(labels.length).fill(1);
 
-      // Acumular se chartType for 'cumulative'
       if (this.chartType === 'cumulative') {
         data = data.reduce((acc, value, index) => {
           acc.push(value + (acc[index - 1] || 0));
@@ -108,7 +104,6 @@ export default {
       return filteredData;
     },
     updateChart() {
-      // Verifica se o gráfico foi inicializado antes de tentar atualizar os dados
       if (this.chart) {
         this.chart.data = this.getChartData();
         this.chart.update();

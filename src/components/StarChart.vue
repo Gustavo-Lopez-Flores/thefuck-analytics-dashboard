@@ -65,9 +65,12 @@ export default {
     getChartData() {
       // Processa dados JSON e aplica filtros
       let filteredData = this.applyFilters(starsData);
+      
+      // Extrair datas e contar número de estrelas
       let labels = filteredData.map((item) => new Date(item.starred_at));
-      let data = filteredData.map((item) => item.stars);
+      let data = Array(labels.length).fill(1);
 
+      // Acumular se chartType for 'cumulative'
       if (this.chartType === 'cumulative') {
         data = data.reduce((acc, value, index) => {
           acc.push(value + (acc[index - 1] || 0));

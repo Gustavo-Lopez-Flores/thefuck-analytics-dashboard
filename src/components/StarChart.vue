@@ -61,6 +61,9 @@ export default {
           },
         },
       });
+
+      // Após inicializar o gráfico, chama updateChart para configurar os dados corretamente
+      this.updateChart();
     },
     getChartData() {
       // Processa dados JSON e aplica filtros
@@ -105,8 +108,11 @@ export default {
       return filteredData;
     },
     updateChart() {
-      this.chart.data = this.getChartData();
-      this.chart.update();
+      // Verifica se o gráfico foi inicializado antes de tentar atualizar os dados
+      if (this.chart) {
+        this.chart.data = this.getChartData();
+        this.chart.update();
+      }
     },
   },
 };
